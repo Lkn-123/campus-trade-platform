@@ -1,4 +1,4 @@
-package com.campustrade.controller;
+﻿package com.campustrade.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -103,7 +103,7 @@ public class ChatController {
             Long otherId = c.getBuyerId().equals(userId) ? c.getSellerId() : c.getBuyerId();
             User other = userMapper.selectById(otherId);
             item.put("otherUserId", otherId);
-            item.put("otherNickname", other != null ? other.getNickname() : "未知用户");
+            item.put("otherNickname", other != null ? (other.getNickname() != null ? other.getNickname() : other.getUsername()) : "未知用户");
 
             int unread = c.getBuyerId().equals(userId) ? (c.getBuyerUnread() != null ? c.getBuyerUnread() : 0)
                                                         : (c.getSellerUnread() != null ? c.getSellerUnread() : 0);

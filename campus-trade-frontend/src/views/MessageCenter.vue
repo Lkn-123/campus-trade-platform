@@ -1,8 +1,6 @@
-<template>
+﻿<template>
   <div class="msg-page">
     <h2>消息中心</h2>
-    <p class="subtitle">与买家的对话</p>
-
     <el-row :gutter="20" style="margin-top:15px">
       <!-- Conversation List -->
       <el-col :span="8">
