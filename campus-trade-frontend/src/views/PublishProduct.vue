@@ -46,6 +46,7 @@
             </div>
             <el-upload
               action="/api/file/upload"
+              :headers="uploadHeaders"
               :show-file-list="false"
               :on-success="handleUploadSuccess"
               :before-upload="beforeUpload"
@@ -107,6 +108,9 @@ const showPriceDialog = ref(false);
 const priceData = ref(null);
 const priceCategoryLabel = ref("未指定");
 const imageList = ref([]);
+const uploadHeaders = {
+  Authorization: "Bearer " + localStorage.getItem("token")
+};
 
 const form = reactive({
   title: "", description: "", price: null, originalPrice: null,
