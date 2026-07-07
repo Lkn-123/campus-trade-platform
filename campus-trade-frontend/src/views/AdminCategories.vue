@@ -40,7 +40,7 @@
 import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { getCategoryList } from "../api/category";
-import axios from "axios";
+import request from "../api/request";
 
 const categories = ref([]);
 const loading = ref(false);
@@ -69,7 +69,7 @@ function startEdit(index, row) {
 
 async function saveEdit(row) {
   try {
-    await axios.put("/api/admin/categories/" + row.id, { name: editName.value, sort: editSort.value });
+    await request.put("/admin/categories/" + row.id, { name: editName.value, sort: editSort.value });
     ElMessage.success("修改成功");
     editingIndex.value = -1;
     await fetchData();
@@ -79,7 +79,7 @@ async function saveEdit(row) {
 async function addCategory() {
   if (!newName.value.trim()) return ElMessage.warning("请输入分类名称");
   try {
-    await axios.post("/api/admin/categories", { name: newName.value, sort: newSort.value });
+    await request.post("/admin/categories", { name: newName.value, sort: newSort.value });
     ElMessage.success("新增成功");
     newName.value = "";
     newSort.value = 1;
@@ -90,7 +90,7 @@ async function addCategory() {
 async function handleDelete(row) {
   try {
     await ElMessageBox.confirm("确定删除该分类？", "警告", { type: "warning" });
-    await axios.delete("/api/admin/categories/" + row.id);
+    await request.delete("/admin/categories/" + row.id);
     ElMessage.success("已删除");
     await fetchData();
   } catch (e) {}

@@ -66,7 +66,7 @@
               <el-icon style="color:#909399;margin-right:2px"><Iphone /></el-icon>
               <span style="font-weight:500">{{ detail.sellerPhone }}</span>
             </div>
-            <div v-else style="font-size:13px;color:#909399">暂无联系方式</div>
+            <div v-else style="font-size:13px;color:#909399">暂无联系方式</div><el-button size="small" type="primary" @click="contactSeller" style="margin-left:auto">联系卖家</el-button>
           </div>
         </div>
       </template>
@@ -76,14 +76,14 @@
     </el-dialog>
 
     <!-- Rating Dialog -->
-    <el-dialog v-model="showRatingDialog" title="评价卖家" width="400px">
+    <el-dialog v-if="showRatingDialog" @close="handleCloseRating" title="评价卖家" width="400px" :destroy-on-close="true">
       <div style="text-align:center;padding:10px">
         <div style="margin-bottom:12px;font-size:15px;color:#606266">给卖家打分</div>
         <el-rate v-model="ratingForm.score" :colors="['#e6a23c','#e6a23c','#e6a23c']" style="margin-bottom:16px" />
         <el-input v-model="ratingForm.content" type="textarea" :rows="3" placeholder="写点评价内容（可选）..." />
       </div>
       <template #footer>
-        <el-button @click="showRatingDialog = false">取消</el-button>
+        <el-button @click="handleCloseRating">取消</el-button>
         <el-button type="primary" @click="submitRating">提交评价</el-button>
       </template>
     </el-dialog>
@@ -94,6 +94,8 @@
 import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Loading } from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
+import { getOrCreateConversation } from "../api/chat";
 import { useUserStore } from "../stores/user";
 import { getMyTransactions, getTransactionDetail, updateTransactionStatus } from "../api/transaction";
 import { createRating } from "../api/rating";
@@ -132,13 +134,27 @@ function txStatusType(s) {
 
 function openRating() {
   if (!detail.value) return;
-  ratingForm.value = { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: 5, content: "" };
+  Object.assign(ratingForm, { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: 5, content: "" });
   showRatingDialog.value = true;
+}
+
+async function contactSeller() {
+  if (!detail.value) return;
+  try {
+    await getOrCreateConversation({ sellerId: detail.value.sellerId, productId: detail.value.productId });
+  } catch (e) {
+    console.error("Contact error:", e);
+  }
+  window.location.href="/messages";
+}
+
+function handleCloseRating() {
+  showRatingDialog.value = false;
 }
 
 async function submitRating() {
   try {
-    await createRating(ratingForm.value);
+    await createRating({ sellerId: ratingForm.sellerId, transactionId: ratingForm.transactionId, score: ratingForm.score, content: ratingForm.content });
     ElMessage.success("评价成功");
     showRatingDialog.value = false;
   } catch (e) {

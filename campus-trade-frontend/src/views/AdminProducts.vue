@@ -32,7 +32,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import axios from "axios";
+import request from "../api/request";
 
 const products = ref([]);
 const loading = ref(false);
@@ -49,9 +49,9 @@ function statusType(s) { return { SELLING: "success", SOLD: "info", TAKEN_DOWN: 
 async function fetchData() {
   loading.value = true;
   try {
-    const res = await axios.get("/api/admin/products", { params: { page: currentPage.value, pageSize, keyword: keyword.value || undefined } });
-    products.value = res.data.data?.records || [];
-    total.value = res.data.data?.total || 0;
+    const res = await request.get("/admin/products", { params: { page: currentPage.value, pageSize, keyword: keyword.value || undefined } });
+    products.value = res.data?.records || [];
+    total.value = res.data?.total || 0;
   } catch (e) {}
   finally { loading.value = false; }
 }
@@ -60,7 +60,7 @@ async function toggleStatus(row) {
   const newStatus = row.status === "SELLING" ? "TAKEN_DOWN" : "SELLING";
   try {
     await ElMessageBox.confirm(newStatus === "TAKEN_DOWN" ? "确定下架该商品？" : "确定重新上架该商品？", "提示");
-    await axios.put("/api/admin/products/" + row.id + "/status?status=" + newStatus);
+    await request.put("/admin/products/" + row.id + "/status?status=" + newStatus);
     ElMessage.success("操作成功");
     await fetchData();
   } catch (e) {}
@@ -69,7 +69,7 @@ async function toggleStatus(row) {
 async function handleDelete(row) {
   try {
     await ElMessageBox.confirm("确定删除该商品？", "警告", { confirmButtonText: "确认删除", type: "warning" });
-    await axios.delete("/api/admin/products/" + row.id);
+    await request.delete("/admin/products/" + row.id);
     ElMessage.success("已删除");
     await fetchData();
   } catch (e) {}
@@ -81,3 +81,4 @@ async function handleDelete(row) {
 .admin-page h2 { font-size: 22px; }
 .toolbar { display: flex; gap: 10px; margin-top: 15px; align-items: center; }
 </style>
+

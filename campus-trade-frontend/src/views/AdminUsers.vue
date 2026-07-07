@@ -35,7 +35,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import axios from "axios";
+import request from "../api/request";
 
 const users = ref([]);
 const loading = ref(false);
@@ -49,9 +49,9 @@ onMounted(() => fetchData());
 async function fetchData() {
   loading.value = true;
   try {
-    const res = await axios.get("/api/admin/users", { params: { page: currentPage.value, pageSize, keyword: keyword.value || undefined } });
-    users.value = res.data.data?.records || [];
-    total.value = res.data.data?.total || 0;
+    const res = await request.get("/admin/users", { params: { page: currentPage.value, pageSize, keyword: keyword.value || undefined } });
+    users.value = res.data?.records || [];
+    total.value = res.data?.total || 0;
   } catch (e) {}
   finally { loading.value = false; }
 }
@@ -59,7 +59,7 @@ async function fetchData() {
 async function toggleStatus(row) {
   try {
     await ElMessageBox.confirm(row.status === 1 ? "确定禁用该用户？" : "确定启用该用户？", "提示");
-    await axios.put("/api/admin/users/" + row.id + "/status");
+    await request.put("/admin/users/" + row.id + "/status");
     ElMessage.success("操作成功");
     await fetchData();
   } catch (e) {}
@@ -68,7 +68,7 @@ async function toggleStatus(row) {
 async function handleDelete(row) {
   try {
     await ElMessageBox.confirm("确定删除该用户？此操作不可恢复！", "警告", { confirmButtonText: "确认删除", type: "warning" });
-    await axios.delete("/api/admin/users/" + row.id);
+    await request.delete("/admin/users/" + row.id);
     ElMessage.success("已删除");
     await fetchData();
   } catch (e) {}
@@ -80,3 +80,5 @@ async function handleDelete(row) {
 .admin-page h2 { font-size: 22px; }
 .toolbar { display: flex; gap: 10px; margin-top: 15px; align-items: center; }
 </style>
+
+

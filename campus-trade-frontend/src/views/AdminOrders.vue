@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import request from "../api/request";
 
 const orders = ref([]);
 const loading = ref(false);
@@ -36,9 +36,9 @@ function statusType(s) { return { PENDING: "warning", PAID: "primary", COMPLETED
 async function fetchData() {
   loading.value = true;
   try {
-    const res = await axios.get("/api/admin/transactions", { params: { page: currentPage.value, pageSize } });
-    orders.value = res.data.data?.records || [];
-    total.value = res.data.data?.total || 0;
+    const res = await request.get("/admin/transactions", { params: { page: currentPage.value, pageSize } });
+    orders.value = res.data?.records || [];
+    total.value = res.data?.total || 0;
   } catch (e) {}
   finally { loading.value = false; }
 }
