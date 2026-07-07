@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="my-page">
     <h2>我的交易</h2>
     <el-table :data="transactions" v-loading="loading" stripe style="width:100%;margin-top:15px">
@@ -24,7 +24,7 @@
     <el-empty v-if="!loading && transactions.length === 0" description="暂无交易" />
     <el-pagination background layout="prev,pager,next" :total="total" :page-size="pageSize" v-model:current-page="currentPage" @current-change="fetchData" style="margin-top:15px" />
 
-    <!-- Transaction Detail Dialog -->
+    <!-- Detail Dialog -->
     <el-dialog v-model="detailVisible" title="交易详情" width="650px" top="5vh">
       <div v-if="detailLoading" style="text-align:center;padding:40px">
         <el-icon class="is-loading" :size="32"><Loading /></el-icon>
@@ -47,8 +47,8 @@
           <el-image v-if="detail.productImages" :src="detail.productImages.split(',')[0]" fit="cover" style="width:130px;height:130px;border-radius:8px;flex-shrink:0;background:#f5f7fa" />
           <div style="flex:1;min-width:0">
             <h3 style="margin:0 0 6px 0;font-size:16px">{{ detail.productTitle }}</h3>
-            <p style="color:#e6a23c;font-size:22px;font-weight:700;margin:0 0 6px 0">￥{{ detail.productPrice }}
-              <span v-if="detail.productOriginalPrice" style="font-size:13px;color:#909399;font-weight:400;text-decoration:line-through;margin-left:8px">￥{{ detail.productOriginalPrice }}</span>
+            <p style="color:#e6a23c;font-size:22px;font-weight:700;margin:0 0 6px 0">&yen;{{ detail.productPrice }}
+              <span v-if="detail.productOriginalPrice" style="font-size:13px;color:#909399;font-weight:400;text-decoration:line-through;margin-left:8px">&yen;{{ detail.productOriginalPrice }}</span>
             </p>
             <p style="color:#606266;font-size:13px;margin:0 0 3px 0"><label style="color:#909399">成色：</label>{{ detail.productCondition || "未说明" }}</p>
             <p style="color:#606266;font-size:13px;margin:0 0 3px 0"><label style="color:#909399">分类：</label>{{ detail.productCategoryName || "未分类" }}</p>
@@ -66,8 +66,9 @@
               <el-icon style="color:#909399;margin-right:2px"><Iphone /></el-icon>
               <span style="font-weight:500">{{ detail.sellerPhone }}</span>
             </div>
-            <div v-else style="font-size:13px;color:#909399">暂无联系方式</div><el-button size="small" type="primary" @click="contactSeller" style="margin-left:auto">联系卖家</el-button>
+            <div v-else style="font-size:13px;color:#909399">暂无联系方式</div>
           </div>
+          <el-button size="small" type="primary" @click="contactSeller" style="margin-left:auto">联系卖家</el-button>
         </div>
       </template>
       <template #footer v-if="detail && detail.status === 'COMPLETED' && detail.myRole === '买家'">
@@ -76,7 +77,7 @@
     </el-dialog>
 
     <!-- Rating Dialog -->
-    <el-dialog v-if="showRatingDialog" @close="handleCloseRating" title="评价卖家" width="400px" :destroy-on-close="true">
+    <el-dialog v-model="showRatingDialog" title="评价卖家" width="400px" :destroy-on-close="true">
       <div style="text-align:center;padding:10px">
         <div style="margin-bottom:12px;font-size:15px;color:#606266">给卖家打分</div>
         <el-rate v-model="ratingForm.score" :colors="['#e6a23c','#e6a23c','#e6a23c']" style="margin-bottom:16px" />
@@ -91,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+ import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Loading } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
@@ -102,16 +103,23 @@ import { createRating } from "../api/rating";
 
 const userStore = useUserStore();
 const userId = userStore.userInfo?.id;
+const router = useRouter();
 const transactions = ref([]);
 const loading = ref(false);
 const total = ref(0);
 const currentPage = ref(1);
 const pageSize = 12;
 
-// Detail dialog
 const detailVisible = ref(false);
 const detailLoading = ref(false);
 const detail = ref(null);
+const showRatingDialog = ref(false);
+const ratingForm = reactive({
+  sellerId: null,
+  transactionId: null,
+  score: 5,
+  content: ""
+});
 
 onMounted(() => fetchData());
 
@@ -130,36 +138,6 @@ function txStatusText(s) {
 }
 function txStatusType(s) {
   return { PENDING: "warning", PAID: "primary", COMPLETED: "success", CANCELLED: "info" }[s] || "info";
-}
-
-function openRating() {
-  if (!detail.value) return;
-  Object.assign(ratingForm, { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: 5, content: "" });
-  showRatingDialog.value = true;
-}
-
-async function contactSeller() {
-  if (!detail.value) return;
-  try {
-    await getOrCreateConversation({ sellerId: detail.value.sellerId, productId: detail.value.productId });
-  } catch (e) {
-    console.error("Contact error:", e);
-  }
-  window.location.href="/messages";
-}
-
-function handleCloseRating() {
-  showRatingDialog.value = false;
-}
-
-async function submitRating() {
-  try {
-    await createRating({ sellerId: ratingForm.sellerId, transactionId: ratingForm.transactionId, score: ratingForm.score, content: ratingForm.content });
-    ElMessage.success("评价成功");
-    showRatingDialog.value = false;
-  } catch (e) {
-    ElMessage.error(e?.response?.data?.message || "评价失败");
-  }
 }
 
 async function showDetail(row) {
@@ -186,6 +164,40 @@ async function updateStatus(id, status) {
     ElMessage.success("操作成功");
     await fetchData();
   } catch (e) {}
+}
+
+function openRating() {
+  if (!detail.value) return;
+  Object.assign(ratingForm, { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: 5, content: "" });
+  showRatingDialog.value = true;
+}
+
+function handleCloseRating() {
+  showRatingDialog.value = false;
+}
+
+async function submitRating() {
+  try {
+    await createRating({ sellerId: ratingForm.sellerId, transactionId: ratingForm.transactionId, score: ratingForm.score, content: ratingForm.content });
+    ElMessage.success("评价成功");
+    showRatingDialog.value = false;
+  } catch (e) {
+    ElMessage.error(e?.response?.data?.message || "评价失败");
+  }
+}
+
+async function contactSeller() {
+  if (!detail.value) return;
+  const otherId = detail.value.myRole === "卖家" ? detail.value.buyerId : detail.value.sellerId;
+  if (!otherId) { ElMessage.error("无法获取对方信息"); return; }
+  try {
+    await getOrCreateConversation({ sellerId: otherId, productId: detail.value.productId });
+  } catch (e) {
+    console.error("Contact error:", e);
+    ElMessage.error("联系失败，请稍后重试");
+    return;
+  }
+  router.push("/messages");
 }
 </script>
 <style scoped>

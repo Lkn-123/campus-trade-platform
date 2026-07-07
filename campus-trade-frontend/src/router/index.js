@@ -7,7 +7,6 @@ import ProductDetail from "../views/ProductDetail.vue";
 import PublishProduct from "../views/PublishProduct.vue";
 import MyProducts from "../views/MyProducts.vue";
 import MyFavorites from "../views/MyFavorites.vue";
-import MyTransactions from "../views/MyTransactions.vue";
 import Profile from "../views/Profile.vue";
 import AiAssistant from "../views/AiAssistant.vue";
 
@@ -30,7 +29,7 @@ const routes = [
   { path: "/publish", name: "Publish", component: PublishProduct, meta: { requiresAuth: true } },
   { path: "/my/products", name: "MyProducts", component: MyProducts, meta: { requiresAuth: true } },
   { path: "/my/favorites", name: "MyFavorites", component: MyFavorites, meta: { requiresAuth: true } },
-    { path: "/my/transactions", name: "MyTransactions", component: MyTransactions, meta: { requiresAuth: true } },
+   { path: "/my/transactions", name: "MyTransactions", component: () => import("../views/MyTransactions.vue"), meta: { requiresAuth: true } },
   { path: "/messages", name: "MessageCenter", component: () => import("../views/MessageCenter.vue"), meta: { requiresAuth: true } },
   { path: "/profile", name: "Profile", component: Profile, meta: { requiresAuth: true } },
   { path: "/ai-assistant", name: "AiAssistant", component: AiAssistant },
