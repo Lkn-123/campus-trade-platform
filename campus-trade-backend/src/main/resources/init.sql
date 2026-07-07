@@ -109,3 +109,43 @@ INSERT INTO category (name, sort) VALUES
 INSERT INTO user (username, password, nickname, role, status) VALUES
 ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '系统管理员', 'ADMIN', 1);
 
+
+-- Missing tables
+CREATE TABLE IF NOT EXISTS conversation (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    buyer_id BIGINT NOT NULL,
+    seller_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    last_message VARCHAR(500),
+    last_time DATETIME,
+    buyer_unread INT DEFAULT 0,
+    seller_unread INT DEFAULT 0,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (buyer_id) REFERENCES user(id),
+    FOREIGN KEY (seller_id) REFERENCES user(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='conversation';
+
+CREATE TABLE IF NOT EXISTS chat_message (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id BIGINT NOT NULL,
+    sender_id BIGINT NOT NULL,
+    content TEXT NOT NULL,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversation_id) REFERENCES conversation(id),
+    FOREIGN KEY (sender_id) REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='chat_message';
+
+CREATE TABLE IF NOT EXISTS rating (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    seller_id BIGINT NOT NULL,
+    transaction_id BIGINT NOT NULL,
+    score INT NOT NULL,
+    content TEXT,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (seller_id) REFERENCES user(id),
+    FOREIGN KEY (transaction_id) REFERENCES transaction(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='rating';
