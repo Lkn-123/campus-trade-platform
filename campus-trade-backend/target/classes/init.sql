@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS campus_trade DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+﻿CREATE DATABASE IF NOT EXISTS campus_trade DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE campus_trade;
 
 -- 用户表
@@ -107,7 +107,7 @@ INSERT INTO category (name, sort) VALUES
 
 -- 初始管理员账号 (密码: admin123)
 INSERT INTO user (username, password, nickname, role, status) VALUES
-('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '系统管理员', 'ADMIN', 1);
+('admin', '$2b$10$qM801j6ByqEEls/BqBhe8OjFUr0mSML.reljd2iFZpj3X51BhtEkq', '系统管理员', 'ADMIN', 1);
 
 
 -- Missing tables

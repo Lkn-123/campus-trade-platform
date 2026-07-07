@@ -44,18 +44,18 @@
                 <el-icon><Close /></el-icon>
               </el-button>
             </div>
-            <el-upload
-              action="/api/file/upload"
-              :headers="uploadHeaders"
-              :show-file-list="false"
-              :on-success="handleUploadSuccess"
-              :before-upload="beforeUpload"
-              list-type="picture-card"
-              style="width:100px;height:100px">
-              <el-icon size="28"><Plus /></el-icon>
-            </el-upload>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              style="display:none"
+              ref="fileInputEl"
+              @change="handleFileSelect">
+            <el-button type="primary" size="small" @click="chooseFile">
+              <el-icon><Plus /></el-icon>
+              <span style="margin-left:4px">选择图片</span>
+            </el-button>
+          <div style="width:100%;color:#909399;font-size:12px;padding-top:12px;line-height:1.6">支持 jpg/png/webp，单张不超过 5MB，建议尺寸 800x800</div>
           </div>
-          <div style="color:#909399;font-size:12px">支持 jpg/png/webp，单张不超过 5MB，建议尺寸 800x800</div>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="submitting" @click="handleSubmit">
@@ -96,6 +96,7 @@ import { ElMessage } from "element-plus";
 import { publishProduct, updateProduct, getProductDetail } from "../api/product";
 import { getCategoryList } from "../api/category";
 import { generateTitle, optimizeDescription, getPriceSuggestion } from "../api/ai";
+import request from "../api/request";
 
 const router = useRouter();
 const route = useRoute();
@@ -108,10 +109,6 @@ const showPriceDialog = ref(false);
 const priceData = ref(null);
 const priceCategoryLabel = ref("未指定");
 const imageList = ref([]);
-const uploadHeaders = {
-  Authorization: "Bearer " + localStorage.getItem("token")
-};
-
 const form = reactive({
   title: "", description: "", price: null, originalPrice: null,
   categoryId: null, condition: "", images: ""
@@ -171,12 +168,44 @@ async function handleOptimizeDesc() {
   } catch (e) {}
 }
 
-async function handleUploadSuccess(res) {
+function handleUploadSuccess(res, file) {
   if (res && res.code === 200) {
+    file.url = res.data;
     imageList.value.push(res.data);
     form.images = imageList.value.join(",");
   } else {
     ElMessage.error(res?.message || "上传失败");
+  }
+}
+
+
+const fileInputEl = ref(null)
+
+function chooseFile() {
+  fileInputEl.value?.click()
+}
+
+async function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    ElMessage.error("图片大小不能超过 5MB");
+    e.target.value = "";
+    return;
+  }
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    const res = await request.post("/file/upload", formData);
+    if (res.code === 200) {
+      imageList.value.push(res.data);
+      form.images = imageList.value.join(",");
+      e.target.value = "";
+    } else {
+      ElMessage.error(res?.message || "上传失败");
+    }
+  } catch (e) {
+    ElMessage.error("上传失败");
   }
 }
 

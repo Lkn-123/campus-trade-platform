@@ -52,6 +52,7 @@ D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campu
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\common\MyMetaObjectHandler.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\service\TransactionService.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\controller\RatingController.java
+D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\service\impl\FavoriteServiceImpl.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\service\impl\CategoryServiceImpl.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\common\JwtAuthFilter.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\config\SecurityConfig.java
@@ -66,4 +67,5 @@ D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campu
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\entity\Category.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\config\WebMvcConfig.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\vo\MessageVo.java
+D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\service\impl\MessageServiceImpl.java
 D:\Homework\Web\codexword\codexword\campus-trade-backend\src\main\java\com\campustrade\controller\FavoriteController.java

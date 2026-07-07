@@ -1,11 +1,10 @@
 ﻿server:
   port: 8080
 
+file:
+  upload-dir: D:\Homework\Web\codexword\codexword\campus-trade-backend\uploads
+
 spring:
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 50MB
   datasource:
     url: jdbc:mysql://localhost:3306/campus_trade?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root

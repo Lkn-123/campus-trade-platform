@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/profile/public").permitAll()
                 .requestMatchers("/api/rating/seller/**").permitAll()
                 .requestMatchers("/api/message/**").permitAll()
+                .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers("/api/chat/**").authenticated()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
