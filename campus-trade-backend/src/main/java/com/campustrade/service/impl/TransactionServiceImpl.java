@@ -51,19 +51,27 @@ public class TransactionServiceImpl implements TransactionService {
         return tx.getId();
     }
 
-    @Override
-    public void updateStatus(Long userId, Long transactionId, String status) {
-        Transaction tx = transactionMapper.selectById(transactionId);
-        if (tx == null) throw new RuntimeException("交易不存在");
+   @Override
+   public void updateStatus(Long userId, Long transactionId, String status) {
+       Transaction tx = transactionMapper.selectById(transactionId);
+       if (tx == null) throw new RuntimeException("交易不存在");
 
-        // Only buyer or seller can update
-        if (!tx.getBuyerId().equals(userId) && !tx.getSellerId().equals(userId)) {
-            throw new RuntimeException("无权操作");
-        }
+       // Only buyer or seller can update
+       if (!tx.getBuyerId().equals(userId) && !tx.getSellerId().equals(userId)) {
+           throw new RuntimeException("无权操作");
+       }
 
-        tx.setStatus(status);
-        transactionMapper.updateById(tx);
-    }
+       tx.setStatus(status);
+       transactionMapper.updateById(tx);
+         // If canceled, revert product to SELLING so it can be re-listed
+         if ("CANCELLED".equals(status)) {
+             Product product = productMapper.selectById(tx.getProductId());
+             if (product != null) {
+                 product.setStatus("SELLING");
+                 productMapper.updateById(product);
+             }
+         }
+   }
 
     @Override
     public IPage<Transaction> getMyTransactions(Long userId, int page, int pageSize) {
@@ -127,7 +135,9 @@ public class TransactionServiceImpl implements TransactionService {
                 new LambdaQueryWrapper<Rating>()
                     .eq(Rating::getTransactionId, t.getId())
                     .eq(Rating::getUserId, currentUserId));
-            vo.setMyRating(rating != null ? rating.getScore() : null);
+                    vo.setMyRating(rating != null ? rating.getScore() : null);
+                    vo.setMyRatingId(rating != null ? rating.getId() : null);
+                    vo.setMyRatingContent(rating != null ? rating.getContent() : null);
 
             List<Rating> sellerRatings = ratingMapper.selectList(
                 new LambdaQueryWrapper<Rating>()

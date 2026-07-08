@@ -32,7 +32,9 @@ public class TransactionDetailVo {
     private String myRole;
 
     // Rating info
+    private Long myRatingId;
     private Integer myRating;
+    private String myRatingContent;
     private Double sellerAvgRating;
     private Integer sellerRatingCount;
 }

@@ -72,12 +72,16 @@
         </div>
       </template>
       <template #footer v-if="detail && detail.status === 'COMPLETED' && detail.myRole === '买家'">
-        <el-button type="warning" @click="openRating">评价卖家</el-button>
+        <div v-if="detail.myRatingId" style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:13px;color:#909399">已评价：{{ detail.myRating }}分</span>
+          <el-button type="warning" @click="openRating">修改评价</el-button>
+        </div>
+        <el-button v-else type="warning" @click="openRating">评价卖家</el-button>
       </template>
     </el-dialog>
 
     <!-- Rating Dialog -->
-    <el-dialog v-model="showRatingDialog" title="评价卖家" width="400px" :destroy-on-close="true">
+    <el-dialog v-model="showRatingDialog" :title="detail?.myRatingId ? '修改评价' : '评价卖家'" width="400px" :destroy-on-close="true">
       <div style="text-align:center;padding:10px">
         <div style="margin-bottom:12px;font-size:15px;color:#606266">给卖家打分</div>
         <el-rate v-model="ratingForm.score" :colors="['#e6a23c','#e6a23c','#e6a23c']" style="margin-bottom:16px" />
@@ -99,7 +103,7 @@ import { useRouter } from "vue-router";
 import { getOrCreateConversation } from "../api/chat";
 import { useUserStore } from "../stores/user";
 import { getMyTransactions, getTransactionDetail, updateTransactionStatus } from "../api/transaction";
-import { createRating } from "../api/rating";
+import { createRating, updateRating } from "../api/rating";
 
 const userStore = useUserStore();
 const userId = userStore.userInfo?.id;
@@ -168,7 +172,11 @@ async function updateStatus(id, status) {
 
 function openRating() {
   if (!detail.value) return;
-  Object.assign(ratingForm, { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: 5, content: "" });
+  if (detail.value.myRatingId) {
+    Object.assign(ratingForm, { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: detail.value.myRating, content: detail.value.myRatingContent || "" });
+  } else {
+    Object.assign(ratingForm, { sellerId: detail.value.sellerId, transactionId: detail.value.id, score: 5, content: "" });
+  }
   showRatingDialog.value = true;
 }
 
@@ -178,9 +186,18 @@ function handleCloseRating() {
 
 async function submitRating() {
   try {
-    await createRating({ sellerId: ratingForm.sellerId, transactionId: ratingForm.transactionId, score: ratingForm.score, content: ratingForm.content });
+    if (detail.value?.myRatingId) {
+      await updateRating(detail.value.myRatingId, { score: ratingForm.score, content: ratingForm.content });
+    } else {
+      await createRating({ sellerId: ratingForm.sellerId, transactionId: ratingForm.transactionId, score: ratingForm.score, content: ratingForm.content });
+    }
     ElMessage.success("评价成功");
     showRatingDialog.value = false;
+    // Reload detail
+    if (detail.value?.id) {
+      const res = await getTransactionDetail(detail.value.id);
+      detail.value = res.data;
+    }
   } catch (e) {
     ElMessage.error(e?.response?.data?.message || "评价失败");
   }

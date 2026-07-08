@@ -10,7 +10,7 @@
             <h2 style="margin:0 0 4px 0">{{ seller.nickname || seller.username }}</h2>
             <div style="color:#909399;font-size:13px">注册时间: {{ seller.createTime }}</div>
             <div style="margin-top:6px">
-              <el-rate v-if="stats && stats.count > 0" :model-value="stats.avgScore" disabled show-score text-color="#e6a23c" score-template="{value} 分 ({{ stats.count }} 笔交易)" />
+              <el-rate v-if="stats && stats.count > 0" :model-value="stats.avgScore" disabled show-score text-color="#e6a23c" :score-template="`{value} 分 (${stats.count} 笔交易)`" />
               <span v-else style="color:#909399;font-size:13px">暂无评价</span>
             </div>
           </div>
@@ -59,8 +59,11 @@
           <el-table-column label="评分" width="150">
             <template #default="{ row }">
               <el-rate :model-value="getProductRating(row.id)" disabled :max="5" :allow-half="true" style="display:inline-block" />
-              <span v-if="hasRating(row.id)" style="font-size:12px;color:#909399;margin-left:4px">{{ getProductRating(row.id) }}</span>
-              <span v-else style="color:#909399;font-size:12px">暂无</span>
+              <div v-if="hasRating(row.id)" style="margin-top:4px">
+                <span style="font-size:12px;color:#e6a23c">{{ getProductRating(row.id) }}</span>
+                <div v-if="getProductRatingContent(row.id)" style="font-size:12px;color:#606266;margin-top:2px">{{ getProductRatingContent(row.id) }}</div>
+              </div>
+              <span v-else style="color:#909399;font-size:12px">暂无评价</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="120">
@@ -179,18 +182,24 @@ async function loadRatingStats() {
     // Build product rating map from detailRatings
     if (res.data?.detailRatings) {
       res.data.detailRatings.forEach(r => {
-        productRatings.value[r.transactionId] = r.score;
+        if (r.productId) {
+          productRatings.value[r.productId] = r;
+        }
       });
     }
   } catch (e) { console.error("评分加载失败", e); }
 }
 
 function getProductRating(productId) {
-  return productRatings.value[productId] || 0;
+  return productRatings.value[productId]?.score || 0;
+}
+
+function getProductRatingContent(productId) {
+  return productRatings.value[productId]?.content || '';
 }
 
 function hasRating(productId) {
-  return productRatings.value[productId] > 0;
+  return productRatings.value[productId]?.score > 0;
 }
 
 async function openChat() {

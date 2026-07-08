@@ -56,9 +56,8 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         BeanUtils.copyProperties(dto, user);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        // 自动生成用户名：u_手机号后4位
-        String shortPhone = dto.getPhone().length() >= 4 ? dto.getPhone().substring(dto.getPhone().length() - 4) : dto.getPhone();
-        user.setUsername("u_" + shortPhone);
+        // 自动生成用户名：u_完整手机号（手机号本身唯一，保证用户名唯一）
+        user.setUsername("u_" + dto.getPhone());
                 // 检查昵称是否唯一
         if (dto.getNickname() != null && !dto.getNickname().isEmpty()) {
             User nickExist = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getNickname, dto.getNickname()));

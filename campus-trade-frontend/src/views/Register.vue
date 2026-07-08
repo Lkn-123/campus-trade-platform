@@ -58,7 +58,7 @@ async function handleRegister() {
     await userStore.register({ phone: form.phone, password: form.password });
     ElMessage.success("注册成功，请登录");
     router.push("/login");
-  } catch (e) {}
+   } catch (e) { ElMessage.error(e?.response?.data?.message || e?.message || "注册失败"); }
   finally { loading.value = false; }
 }
 </script>
