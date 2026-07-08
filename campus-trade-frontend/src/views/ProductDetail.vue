@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="detail-page" v-loading="loading">
     <el-card v-if="product" shadow="never">
       <el-row :gutter="30">
@@ -31,7 +31,7 @@
             <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff7e6;border-radius:8px;margin-bottom:8px">
               <el-avatar :size="48" icon="UserFilled" :style="{background: '#e6a23c'}" />
               <div>
-                <div style="font-size:15px;font-weight:600;margin-bottom:6px">??: {{ product.buyerNickname }}</div>
+                <div style="font-size:15px;font-weight:600;margin-bottom:6px"><span style="color:#e6a23c">已出售</span> - {{ product.buyerNickname || '卖家标记已售' }}</div>
                 <div v-if="product.buyerPhone" style="font-size:14px;color:#606266">
                   <el-icon style="color:#909399;margin-right:2px"><Iphone /></el-icon>
                   <span style="font-weight:500">{{ product.buyerPhone }}</span>
