@@ -16,6 +16,8 @@ public class ProductDetailVo {
     private String categoryName;
     private Long categoryId;
     private UserInfoVo seller;
+    private String buyerNickname;
+    private String buyerPhone;
     private boolean favorited;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

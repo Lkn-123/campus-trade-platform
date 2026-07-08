@@ -7,9 +7,11 @@ import com.campustrade.dto.ProductSearchDto;
 import com.campustrade.entity.Category;
 import com.campustrade.entity.Favorite;
 import com.campustrade.entity.Product;
-import com.campustrade.entity.User;
+ import com.campustrade.entity.User;
+ import com.campustrade.entity.Transaction;
 import com.campustrade.mapper.CategoryMapper;
 import com.campustrade.mapper.FavoriteMapper;
+import com.campustrade.mapper.TransactionMapper;
 import com.campustrade.mapper.ProductMapper;
 import com.campustrade.mapper.UserMapper;
 import com.campustrade.service.ProductService;
@@ -27,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired private CategoryMapper categoryMapper;
     @Autowired private UserMapper userMapper;
     @Autowired private FavoriteMapper favoriteMapper;
+    @Autowired
+    private TransactionMapper transactionMapper;
     @Override
     public Long publish(Long userId, ProductPublishDto dto) {
         Product product = new Product();
@@ -76,6 +80,25 @@ public class ProductServiceImpl implements ProductService {
             Long count = favoriteMapper.selectCount(new LambdaQueryWrapper<Favorite>()
                 .eq(Favorite::getUserId, currentUserId).eq(Favorite::getProductId, productId));
             vo.setFavorited(count > 0);
+        }
+        // Set buyer info for sold products
+        if ("SOLD".equals(product.getStatus())) {
+            Transaction tx = transactionMapper.selectOne(
+                new LambdaQueryWrapper<Transaction>()
+                    .eq(Transaction::getProductId, productId)
+                    .orderByDesc(Transaction::getCreateTime)
+                    .last("LIMIT 1"));
+            if (tx != null) {
+                User buyer = userMapper.selectById(tx.getBuyerId());
+                if (buyer != null) {
+                    if (buyer.getNickname() != null && !buyer.getNickname().isEmpty()) {
+                        vo.setBuyerNickname(buyer.getNickname());
+                    } else {
+                        vo.setBuyerNickname(buyer.getUsername());
+                    }
+                    vo.setBuyerPhone(buyer.getPhone());
+                }
+            }
         }
         return vo;
     }
@@ -161,5 +184,4 @@ public class ProductServiceImpl implements ProductService {
         productMapper.updateById(product);
     }
 }
-
 

@@ -1,4 +1,4 @@
-﻿package com.campustrade.controller;
+package com.campustrade.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

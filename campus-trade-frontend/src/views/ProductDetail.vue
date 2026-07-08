@@ -26,15 +26,28 @@
                 交易 {{ sellerStats.count }} 笔 | 评分 \{{ sellerStats.avgScore > 0 ? '★'.repeat(Math.round(sellerStats.avgScore)) + ' ' + sellerStats.avgScore : '暂无评价' }}</div>
             </div>
           </div>
-          <div class="detail-actions">
-            <el-button v-if="userStore.isLoggedIn && product.seller?.id !== userStore.userInfo?.id" type="primary" size="large" @click="handleBuy">
+                    <div v-if="product.status === 'SOLD' && product.buyerNickname" class="detail-buyer">
+            <el-divider />
+            <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff7e6;border-radius:8px;margin-bottom:8px">
+              <el-avatar :size="48" icon="UserFilled" :style="{background: '#e6a23c'}" />
+              <div>
+                <div style="font-size:15px;font-weight:600;margin-bottom:6px">??: {{ product.buyerNickname }}</div>
+                <div v-if="product.buyerPhone" style="font-size:14px;color:#606266">
+                  <el-icon style="color:#909399;margin-right:2px"><Iphone /></el-icon>
+                  <span style="font-weight:500">{{ product.buyerPhone }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+<div class="detail-actions">
+            <el-button v-if="userStore.isLoggedIn" type="primary" size="large" @click="handleBuy">
               <el-icon><ShoppingCart /></el-icon>立即购买
             </el-button>
-            <el-button v-if="userStore.isLoggedIn && product.seller?.id !== userStore.userInfo?.id"
+            <el-button v-if="userStore.isLoggedIn"
               :type="product.favorited ? 'warning' : 'default'" size="large" @click="handleFavorite">
               <el-icon><Star /></el-icon>{{ product.favorited ? "已收藏" : "收藏" }}
             </el-button>
-            <el-button v-if="userStore.isLoggedIn && product.seller?.id !== userStore.userInfo?.id"
+            <el-button v-if="userStore.isLoggedIn"
               size="large" @click="showReport = true">
               <el-icon><WarningFilled /></el-icon>举报
             </el-button>

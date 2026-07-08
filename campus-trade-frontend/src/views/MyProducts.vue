@@ -24,6 +24,7 @@
           <el-button size="small" @click="$router.push('/publish?edit=' + row.id)">编辑</el-button>
           <el-button size="small" v-if="row.status === 'SELLING'" type="success" @click="changeStatus(row.id, 'SOLD')">标记已售</el-button>
           <el-button size="small" v-if="row.status !== 'TAKEN_DOWN'" type="info" @click="changeStatus(row.id, 'TAKEN_DOWN')">下架</el-button>
+          <el-button size="small" v-if="row.status === 'TAKEN_DOWN'" type="primary" @click="changeStatus(row.id, 'SELLING')">重新上架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -63,7 +64,7 @@ function statusType(s) {
 
 async function changeStatus(id, status) {
   try {
-    const msg = { SELLING: "确定要下架此商品吗？", SOLD: "确定要标记为已售出吗？", TAKEN_DOWN: "确定要下架此商品吗？" };
+    const msg = { SELLING: "确定要重新上架此商品吗？", SOLD: "确定要标记为已售出吗？", TAKEN_DOWN: "确定要下架此商品吗？" };
     await ElMessageBox.confirm(msg[status] || "确定执行此操作吗？", "操作确认", { confirmButtonText: "确定", cancelButtonText: "取消" });
     await updateProductStatus(id, status);
     ElMessage.success("操作成功");
