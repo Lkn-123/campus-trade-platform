@@ -10,7 +10,7 @@
             <h2 style="margin:0 0 4px 0">{{ seller.nickname || seller.username }}</h2>
             <div style="color:#909399;font-size:13px">注册时间: {{ seller.createTime }}</div>
             <div style="margin-top:6px">
-              <el-rate v-if="stats && stats.count > 0" :model-value="stats.avgScore" disabled show-score text-color="#e6a23c" :score-template="`{value} 分 (${stats.count} 笔交易)`" />
+              <el-rate v-if="stats && stats.count > 0" :model-value="stats.avgScore" disabled show-score text-color="#f7ba2a" :colors="['#f7ba2a','#f7ba2a','#f7ba2a']" :score-template="`{value} 分 (${transactionCount} 笔交易)`" />
               <span v-else style="color:#909399;font-size:13px">暂无评价</span>
             </div>
           </div>
@@ -58,7 +58,7 @@
           </el-table-column>
           <el-table-column label="评分" width="150">
             <template #default="{ row }">
-              <el-rate :model-value="getProductRating(row.id)" disabled :max="5" :allow-half="true" style="display:inline-block" />
+              <el-rate :model-value="getProductRating(row.id)" disabled :max="5" :allow-half="true" style="display:inline-block" :colors="['#f7ba2a','#f7ba2a','#f7ba2a']" />
               <div v-if="hasRating(row.id)" style="margin-top:4px">
                 <span style="font-size:12px;color:#e6a23c">{{ getProductRating(row.id) }}</span>
                 <div v-if="getProductRatingContent(row.id)" style="font-size:12px;color:#606266;margin-top:2px">{{ getProductRatingContent(row.id) }}</div>

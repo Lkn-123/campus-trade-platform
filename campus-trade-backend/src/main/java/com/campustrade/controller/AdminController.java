@@ -36,10 +36,10 @@ public class AdminController {
         data.put("reportCount", reportMapper.selectCount(null));
         data.put("pendingReportCount", reportMapper.selectCount(
             new LambdaQueryWrapper<Report>().eq(Report::getStatus, "PENDING")));
-        data.put("sellingCount", productMapper.selectCount(
-            new LambdaQueryWrapper<Product>().eq(Product::getStatus, "SELLING")));
-        data.put("soldCount", productMapper.selectCount(
-            new LambdaQueryWrapper<Product>().eq(Product::getStatus, "SOLD")));
+       data.put("sellingCount", productMapper.selectCount(
+           new LambdaQueryWrapper<Product>().eq(Product::getStatus, "SELLING")));
+        data.put("soldCount", transactionMapper.selectCount(
+            new LambdaQueryWrapper<Transaction>().eq(Transaction::getStatus, "COMPLETED")));
 
         // Daily stats for charts (last 7 days)
         List<Map<String, Object>> dailyStats = new ArrayList<>();
