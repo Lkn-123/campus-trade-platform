@@ -52,13 +52,71 @@ function goHome() {
 
 <style scoped>
 .admin-layout { display: flex; min-height: calc(100vh - 64px); }
-.admin-sidebar { width: 220px; background: #1F2937; color: #fff; display: flex; flex-direction: column; flex-shrink: 0; }
-.sidebar-header { height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 18px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.1); color: var(--el-color-primary-light-5); }
-.sidebar-menu { flex: 1; border-right: none; background: transparent; }
-.sidebar-menu .el-menu-item { color: rgba(255,255,255,.7); }
-.sidebar-menu .el-menu-item:hover, .sidebar-menu .el-menu-item.is-active { color: #fff; }
-.sidebar-menu .el-menu-item.is-active { color: var(--el-color-primary-light-5); background: rgba(5,150,105,.15); }
-.sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,.1); text-align: center; }
-.sidebar-footer .el-button { color: rgba(255,255,255,.6); }
+.admin-sidebar {
+  width: 220px;
+  background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+/* Subtle decorative gradient spot */
+.admin-sidebar::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sidebar-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  color: var(--el-color-primary-light-5);
+  position: relative;
+  z-index: 1;
+}
+.sidebar-menu {
+  flex: 1;
+  border-right: none;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+/* Reduce Element Plus menu default padding */
+.sidebar-menu .el-menu-item {
+  color: rgba(255,255,255,.7);
+  padding-left: 24px !important;
+}
+.sidebar-menu .el-menu-item:hover,
+.sidebar-menu .el-menu-item.is-active {
+  color: #fff;
+}
+.sidebar-menu .el-menu-item.is-active {
+  color: var(--el-color-primary-light-5);
+  background: rgba(5,150,105,.15);
+  border-right: 3px solid var(--el-color-primary-light-5);
+}
+.sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.sidebar-footer .el-button {
+  color: rgba(255,255,255,.6);
+}
 .admin-main { flex: 1; padding: 24px; background: var(--el-bg-color-page); overflow-y: auto; }
 </style>
