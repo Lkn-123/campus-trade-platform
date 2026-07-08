@@ -26,7 +26,7 @@
                 交易 {{ sellerStats.count }} 笔 | 评分 \{{ sellerStats.avgScore > 0 ? '★'.repeat(Math.round(sellerStats.avgScore)) + ' ' + sellerStats.avgScore : '暂无评价' }}</div>
             </div>
           </div>
-                    <div v-if="product.status === 'SOLD' && product.buyerNickname" class="detail-buyer">
+                    <div v-if="product.status === 'SOLD'" class="detail-buyer">
             <el-divider />
             <div style="display:flex;align-items:center;gap:14px;padding:12px 16px;background:#fff7e6;border-radius:8px;margin-bottom:8px">
               <el-avatar :size="48" icon="UserFilled" :style="{background: '#e6a23c'}" />

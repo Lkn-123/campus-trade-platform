@@ -22,7 +22,8 @@
       <el-table-column label="操作" width="200" fixed="right">
         <template #default="{ row }">
           <el-button size="small" @click="$router.push('/publish?edit=' + row.id)">编辑</el-button>
-          <el-button size="small" v-if="row.status === 'SELLING'" type="success" @click="changeStatus(row.id, 'SOLD')">标记已售</el-button>
+         <el-button size="small" v-if="row.status === 'SELLING'" type="success" @click="changeStatus(row.id, 'SOLD')">标记已售</el-button>
+          <el-button size="small" v-if="row.status === 'SOLD'" type="primary" @click="changeStatus(row.id, 'SELLING')">重新上架</el-button>
           <el-button size="small" v-if="row.status !== 'TAKEN_DOWN'" type="info" @click="changeStatus(row.id, 'TAKEN_DOWN')">下架</el-button>
           <el-button size="small" v-if="row.status === 'TAKEN_DOWN'" type="primary" @click="changeStatus(row.id, 'SELLING')">重新上架</el-button>
         </template>

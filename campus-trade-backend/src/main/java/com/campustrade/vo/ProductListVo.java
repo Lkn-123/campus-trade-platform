@@ -13,5 +13,7 @@ public class ProductListVo {
     private Integer viewCount;
     private String categoryName;
     private String sellerNickname;
+    private String buyerNickname;
+    private String buyerPhone;
     private LocalDateTime createTime;
 }

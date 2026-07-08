@@ -82,13 +82,13 @@ public class ProductServiceImpl implements ProductService {
             vo.setFavorited(count > 0);
         }
         // Set buyer info for sold products
-        if ("SOLD".equals(product.getStatus())) {
-            Transaction tx = transactionMapper.selectOne(
-                new LambdaQueryWrapper<Transaction>()
-                    .eq(Transaction::getProductId, productId)
-                    .orderByDesc(Transaction::getCreateTime)
-                    .last("LIMIT 1"));
-            if (tx != null) {
+   if ("SOLD".equals(product.getStatus())) {
+       Transaction tx = transactionMapper.selectOne(
+           new LambdaQueryWrapper<Transaction>()
+               .eq(Transaction::getProductId, productId)
+               .orderByDesc(Transaction::getCreateTime)
+               .last("LIMIT 1"));
+        if (tx != null && "COMPLETED".equals(tx.getStatus())) {
                 User buyer = userMapper.selectById(tx.getBuyerId());
                 if (buyer != null) {
                     if (buyer.getNickname() != null && !buyer.getNickname().isEmpty()) {
@@ -97,8 +97,17 @@ public class ProductServiceImpl implements ProductService {
                         vo.setBuyerNickname(buyer.getUsername());
                     }
                     vo.setBuyerPhone(buyer.getPhone());
-                }
+       }
+        // Seller-marked as sold (no completed transaction), show seller
+        if (vo.getBuyerNickname() == null) {
+            if (vo.getSeller() != null) {
+                String sellerName = vo.getSeller().getNickname() != null ? vo.getSeller().getNickname() : vo.getSeller().getUsername();
+                vo.setBuyerNickname(sellerName + "（卖家标记已售）");
+            } else {
+                vo.setBuyerNickname("卖家标记已售");
             }
+        }
+   }
         }
         return vo;
     }
@@ -158,18 +167,26 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public IPage<ProductListVo> getSoldBySeller(Long sellerId, int pageNum, int pageSize) {
-        Page<Product> page = new Page<>(pageNum, pageSize);
-        IPage<Product> productPage = productMapper.selectPage(page,
-            new LambdaQueryWrapper<Product>()
-                .eq(Product::getUserId, sellerId)
-                .eq(Product::getStatus, "SOLD")
-                .orderByDesc(Product::getUpdateTime));
-        IPage<ProductListVo> voPage = new Page<>(productPage.getCurrent(), productPage.getSize(), productPage.getTotal());
-        voPage.setRecords(productPage.getRecords().stream().map(p -> {
+        Page<Transaction> txPage = new Page<>(pageNum, pageSize);
+        IPage<Transaction> completedTxPage = transactionMapper.selectPage(txPage,
+            new LambdaQueryWrapper<Transaction>()
+                .eq(Transaction::getSellerId, sellerId)
+                .eq(Transaction::getStatus, "COMPLETED")
+                .orderByDesc(Transaction::getCreateTime));
+        IPage<ProductListVo> voPage = new Page<>(txPage.getCurrent(), txPage.getSize(), txPage.getTotal());
+        voPage.setRecords(completedTxPage.getRecords().stream().map(tx -> {
+            Product p = productMapper.selectById(tx.getProductId());
             ProductListVo vo = new ProductListVo();
-            BeanUtils.copyProperties(p, vo);
-            com.campustrade.entity.Category cat = categoryMapper.selectById(p.getCategoryId());
-            if (cat != null) vo.setCategoryName(cat.getName());
+            if (p != null) {
+                BeanUtils.copyProperties(p, vo);
+                com.campustrade.entity.Category cat = categoryMapper.selectById(p.getCategoryId());
+                if (cat != null) vo.setCategoryName(cat.getName());
+            }
+            User buyer = userMapper.selectById(tx.getBuyerId());
+            if (buyer != null) {
+                vo.setBuyerNickname(buyer.getNickname() != null ? buyer.getNickname() : buyer.getUsername());
+                vo.setBuyerPhone(buyer.getPhone());
+            }
             return vo;
         }).collect(java.util.stream.Collectors.toList()));
         return voPage;
