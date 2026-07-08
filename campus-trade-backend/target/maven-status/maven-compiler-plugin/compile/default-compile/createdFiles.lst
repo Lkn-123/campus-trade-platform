@@ -42,6 +42,7 @@ com\campustrade\service\impl\ReportServiceImpl.class
 com\campustrade\config\WebMvcConfig.class
 com\campustrade\mapper\MessageMapper.class
 com\campustrade\config\SecurityConfig.class
+com\campustrade\controller\ChatController.class
 com\campustrade\entity\Report.class
 com\campustrade\service\impl\FavoriteServiceImpl.class
 com\campustrade\common\JwtUtil.class

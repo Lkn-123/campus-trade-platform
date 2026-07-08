@@ -1,4 +1,4 @@
-﻿server:
+server:
   port: 8080
 
 file:
@@ -25,3 +25,8 @@ mybatis-plus:
 jwt:
   secret: campus-trade-secret-key-2024-this-is-a-very-long-secret-key-for-jwt
   expiration: 86400000
+
+ai:
+  base-url: https://api.deepseek.com/v1
+  api-key: "sk-78acc09453c34856aea59abb3f39aa2a"
+  model: deepseek-chat
