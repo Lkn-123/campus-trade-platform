@@ -244,7 +244,7 @@ async function sendChat() {
 <style scoped>
 .seller-page { max-width: 1000px; margin: 0 auto; }
 .stat-num { font-size: 28px; font-weight: 700; text-align: center; }
-.stat-lbl { font-size: 13px; color: #909399; text-align: center; margin-top: 4px; }
-.link { cursor: pointer; color: #409eff; }
-.link:hover { text-decoration: underline; }
+.stat-lbl { font-size: 13px; color: var(--el-text-color-secondary); text-align: center; margin-top: 4px; }
+.link { cursor: pointer; color: var(--el-color-primary); font-weight: 500; }
+.link:hover { text-decoration: underline; opacity: 0.8; }
 </style>

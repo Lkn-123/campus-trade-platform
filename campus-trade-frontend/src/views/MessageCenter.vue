@@ -122,9 +122,9 @@ function formatTime(t) {
 
 <style scoped>
 .msg-page { max-width: 1100px; margin: 0 auto; }
-.msg-page h2 { font-size: 22px; }
-.subtitle { color: #909399; margin-top: 5px; }
-.conv-item { padding: 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; border-radius: 6px; }
-.conv-item:hover { background: #f5f7fa; }
-.conv-item.active { background: #ecf5ff; }
+.msg-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
+.subtitle { color: var(--el-text-color-secondary); margin-top: 5px; }
+.conv-item { padding: 12px; border-bottom: 1px solid var(--el-border-color-lighter); cursor: pointer; border-radius: var(--el-border-radius-base); transition: all 0.2s; }
+.conv-item:hover { background: var(--el-fill-color); }
+.conv-item.active { background: var(--el-color-primary-light-9); }
 </style>

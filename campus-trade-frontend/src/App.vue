@@ -13,6 +13,8 @@ import NavBar from './components/NavBar.vue'
 
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f5f7fa; color: #303133; }
-.main-content { min-height: calc(100vh - 60px); padding: 20px; max-width: 1200px; margin: 0 auto; }
+.main-content { min-height: calc(100vh - 64px); padding: 24px; max-width: 1200px; margin: 0 auto; }
+@media (max-width: 768px) {
+  .main-content { padding: 16px; }
+}
 </style>

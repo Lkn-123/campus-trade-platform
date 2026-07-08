@@ -3,7 +3,7 @@
     <div class="nav-inner">
       <router-link to="/" class="logo">
         <el-icon :size="24"><ShoppingBag /></el-icon>
-        <span>校园二手交易</span>
+        <span class="logo-text">校园二手交易</span>
       </router-link>
       <div class="nav-links">
         <router-link to="/" class="nav-link">首页</router-link>
@@ -101,9 +101,9 @@ function handleLogout() {
 
 <style scoped>
 .navbar {
-  background: #fff;
-  border-bottom: 1px solid #e4e7ed;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  background: var(--el-bg-color);
+  border-bottom: 1px solid var(--el-border-color-light);
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -111,57 +111,69 @@ function handleLogout() {
 .nav-inner {
   max-width: 1200px;
   margin: 0 auto;
-  height: 60px;
+  height: 64px;
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  gap: 30px;
+  padding: 0 24px;
+  gap: 32px;
 }
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
-  color: #409eff;
-  font-size: 18px;
+  color: var(--el-color-primary);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.logo .logo-text {
+  color: var(--el-text-color-primary);
   font-weight: 600;
 }
 .nav-links {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   flex: 1;
 }
 .nav-link {
   text-decoration: none;
-  color: #606266;
+  color: var(--el-text-color-secondary);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 14px;
-}
-.nav-link:hover { color: #409eff; }
-.publish-link {
-  color: #67c23a;
   font-weight: 500;
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
 }
-.nav-user { display: flex; align-items: center; gap: 10px; }
+.nav-link:hover { color: var(--el-color-primary); border-bottom-color: var(--el-color-primary); }
+.nav-link.router-link-active { color: var(--el-color-primary); border-bottom-color: var(--el-color-primary); }
+.publish-link {
+  color: var(--el-color-primary);
+  font-weight: 600;
+}
+.nav-user { display: flex; align-items: center; gap: 12px; }
 .msg-btn {
   text-decoration: none;
-  color: #606266;
+  color: var(--el-text-color-secondary);
   display: flex;
   align-items: center;
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: 6px 8px;
+  border-radius: var(--el-border-radius-base);
+  transition: all 0.2s;
 }
-.msg-btn:hover { color: #409eff; background: #f5f7fa; }
+.msg-btn:hover { color: var(--el-color-primary); background: var(--el-color-primary-light-9); }
 .user-info {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: var(--el-border-radius-base);
+  transition: background 0.2s;
 }
-.user-info:hover { background: #f5f7fa; }
-.username { font-size: 14px; color: #303133; }
+.user-info:hover { background: var(--el-color-primary-light-9); }
+.username { font-size: 14px; font-weight: 500; color: var(--el-text-color-primary); }
 </style>

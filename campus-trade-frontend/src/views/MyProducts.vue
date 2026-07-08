@@ -75,7 +75,7 @@ async function changeStatus(id, status) {
 </script>
 <style scoped>
 .my-page { max-width: 1100px; margin: 0 auto; }
-.my-page h2 { font-size: 22px; }
-.link { cursor: pointer; color: #409eff; }
-.link:hover { text-decoration: underline; }
+.my-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
+.link { cursor: pointer; color: var(--el-color-primary); font-weight: 500; }
+.link:hover { text-decoration: underline; opacity: 0.8; }
 </style>

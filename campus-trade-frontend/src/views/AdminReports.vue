@@ -68,5 +68,5 @@ async function handleReport(id, status) {
 </script>
 <style scoped>
 .my-page { max-width: 1100px; margin: 0 auto; }
-.my-page h2 { font-size: 22px; }
+.my-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
 </style>

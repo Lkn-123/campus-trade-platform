@@ -271,12 +271,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.admin-page { max-width: 1200px; margin: 0 auto; }
 .admin-page h2 { font-size: 22px; }
-.subtitle { color: #909399; margin-top: 5px; }
-.stat-card { position: relative; min-height: 100px; margin-bottom: 20px; cursor: pointer; transition: transform .2s; }
-.stat-card:hover { transform: translateY(-3px); }
+.subtitle { color: var(--el-text-color-secondary); margin-top: 5px; }
+.stat-card { position: relative; min-height: 100px; margin-bottom: 20px; cursor: pointer; transition: all .25s ease; border-radius: var(--el-border-radius-base); }
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--el-box-shadow-hover); }
 .stat-value { font-size: 32px; font-weight: 700; }
-.stat-label { font-size: 14px; color: #909399; margin-top: 5px; }
-.stat-icon { position: absolute; right: 20px; top: 20px; opacity: .3; }
+.stat-label { font-size: 14px; color: var(--el-text-color-secondary); margin-top: 5px; }
+.stat-icon { position: absolute; right: 20px; top: 20px; opacity: .2; }
 </style>

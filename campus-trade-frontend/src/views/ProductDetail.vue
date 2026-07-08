@@ -275,21 +275,19 @@ async function submitReport() {
 
 <style scoped>
 .detail-page { max-width: 1000px; margin: 0 auto; }
-.detail-title { font-size: 22px; margin-bottom: 15px; }
+.detail-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--el-text-color-primary); letter-spacing: -0.3px; }
 .detail-price { margin-bottom: 20px; }
-.price { font-size: 28px; font-weight: 700; color: #e6a23c; }
-.original-price { margin-left: 10px; font-size: 16px; color: #909399; text-decoration: line-through; }
-.detail-info { margin: 15px 0; }
+.price { font-size: 30px; font-weight: 700; color: var(--el-color-warning); }
+.original-price { margin-left: 12px; font-size: 16px; color: var(--el-text-color-placeholder); text-decoration: line-through; }
+.detail-info { margin: 16px 0; background: var(--el-fill-color-light); padding: 16px; border-radius: var(--el-border-radius-base); }
 .info-item { margin: 6px 0; font-size: 14px; }
-.info-item label { color: #909399; margin-right: 8px; }
-.detail-seller { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid #eee; margin: 15px 0; }
-.seller-name { font-size: 15px; font-weight: 500; }
-.seller-phone { font-size: 13px; color: #909399; margin-top: 2px; }
-.seller-phone { font-size: 13px; color: #909399; margin-top: 2px; }
-.seller-phone { font-size: 13px; color: #909399; margin-top: 2px; }
-.detail-actions { display: flex; gap: 12px; margin-top: 15px; }
-.detail-desc { line-height: 1.8; color: #606266; white-space: pre-wrap; }
-.message-area { margin-top: 15px; }
-.message-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-.message-item p { margin-top: 5px; }
+.info-item label { color: var(--el-text-color-secondary); margin-right: 10px; }
+.detail-seller { display: flex; align-items: center; gap: 14px; border-top: 1px solid var(--el-border-color-lighter); margin: 16px 0; cursor: pointer; border-radius: var(--el-border-radius-base); padding: 12px 16px; transition: background 0.2s; }
+.detail-seller:hover { background: var(--el-color-primary-light-9); }
+.seller-name { font-size: 16px; font-weight: 600; color: var(--el-text-color-primary); }
+.detail-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.detail-desc { line-height: 1.8; color: var(--el-text-color-regular); white-space: pre-wrap; background: var(--el-fill-color-light); padding: 16px; border-radius: var(--el-border-radius-base); }
+.message-area { margin-top: 16px; }
+.message-item { padding: 12px 0; border-bottom: 1px solid var(--el-border-color-lighter); }
+.message-item:last-child { border-bottom: none; }
 </style>

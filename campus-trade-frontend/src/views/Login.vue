@@ -55,11 +55,11 @@ async function handleLogin() {
 </script>
 
 <style scoped>
-.auth-page { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 100px); }
-.auth-card { width: 420px; padding: 20px; }
-.auth-title { text-align: center; color: #409eff; margin-bottom: 5px; }
-.auth-subtitle { text-align: center; color: #909399; margin-bottom: 30px; font-size: 14px; }
-.auth-btn { width: 100%; }
-.auth-footer { text-align: center; font-size: 14px; color: #909399; }
-.auth-footer a { color: #409eff; text-decoration: none; }
+.auth-page { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 112px); }
+.auth-card { width: 420px; border-radius: 12px; box-shadow: 0 4px 16px 0 rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.08); padding: 20px; }
+.auth-title { text-align: center; color: var(--el-color-primary); margin-bottom: 4px; font-size: 22px; }
+.auth-subtitle { text-align: center; color: var(--el-text-color-secondary); margin-bottom: 32px; font-size: 14px; }
+.auth-btn { width: 100%; border-radius: var(--el-border-radius-base); }
+.auth-footer { text-align: center; font-size: 14px; color: var(--el-text-color-secondary); margin-top: 8px; }
+.auth-footer a { color: var(--el-color-primary); text-decoration: none; font-weight: 500; }
 </style>

@@ -76,9 +76,8 @@ async function handleDelete(row) {
 </script>
 
 <style scoped>
-.admin-page { max-width: 1200px; }
-.admin-page h2 { font-size: 22px; }
-.toolbar { display: flex; gap: 10px; margin-top: 15px; align-items: center; }
+.admin-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
+.toolbar { display: flex; gap: 10px; margin-top: 15px; align-items: center; flex-wrap: wrap; }
 </style>
 
 

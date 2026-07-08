@@ -45,6 +45,5 @@ async function fetchData() {
 </script>
 
 <style scoped>
-.admin-page { max-width: 1200px; }
-.admin-page h2 { font-size: 22px; }
+.admin-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
 </style>

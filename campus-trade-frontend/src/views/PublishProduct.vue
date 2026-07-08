@@ -269,5 +269,5 @@ async function handleSubmit() {
 
 <style scoped>
 .publish-page { max-width: 900px; margin: 0 auto; }
-.publish-page h2 { font-size: 22px; }
+.publish-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
 </style>

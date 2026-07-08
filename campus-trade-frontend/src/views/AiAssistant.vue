@@ -165,16 +165,15 @@ async function handlePriceCheck() {
 
 <style scoped>
 .ai-page { max-width: 1100px; margin: 0 auto; }
-.ai-page h2 { font-size: 22px; }
-.subtitle { color: #909399; margin-top: 5px; }
+.ai-page h2 { font-size: 22px; color: var(--el-text-color-primary); }
+.subtitle { color: var(--el-text-color-secondary); margin-top: 5px; font-size: 14px; }
 .card-header { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-.chat-box { height: 250px; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; }
-.chat-msg { margin-bottom: 10px; }
+.chat-box { height: 250px; overflow-y: auto; margin-bottom: 10px; padding: 14px; background: var(--el-fill-color); border-radius: var(--el-border-radius-base); border: 1px solid var(--el-border-color-lighter); }
+.chat-msg { margin-bottom: 12px; }
 .chat-user { text-align: right; }
 .chat-ai { text-align: left; }
-.msg-content { display: inline-block; padding: 8px 14px; border-radius: 12px; max-width: 80%; white-space: pre-wrap; background: #fff; border: 1px solid #e4e7ed; }
-.chat-user .msg-content { background: #409eff; color: #fff; border-color: #409eff; }
-.msg-time { font-size: 11px; color: #909399; margin-top: 3px; }
-.quick-questions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-.quick-questions .el-tag { cursor: pointer; }
+.msg-content { display: inline-block; padding: 10px 16px; border-radius: 14px; max-width: 80%; white-space: pre-wrap; background: var(--el-bg-color); border: 1px solid var(--el-border-color-light); color: var(--el-text-color-primary); }
+.chat-user .msg-content { background: var(--el-color-primary); color: #fff; border-color: var(--el-color-primary); }
+.msg-time { font-size: 11px; color: var(--el-text-color-placeholder); margin-top: 4px; }
+.quick-questions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 </style>

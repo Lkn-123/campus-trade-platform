@@ -122,5 +122,5 @@ async function changePassword() {
 
 <style scoped>
 .profile-page { max-width: 1000px; margin: 0 auto; }
-.profile-page h2 { font-size: 20px; }
+.profile-page h2 { font-size: 20px; color: var(--el-text-color-primary); }
 </style>
